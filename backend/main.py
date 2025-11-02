@@ -4,7 +4,7 @@ from tensorflow.keras.models import load_model
 from PIL import Image
 import numpy as np
 import io
-from fastapi.middleware.cors import CORSMiddleware  # <-- 1. IMPORT THIS (NEW)
+from fastapi.middleware.cors import CORSMiddleware 
 
 # --- 1. Load your CLEAN, FINAL Keras model ---
 # This path should be correct
