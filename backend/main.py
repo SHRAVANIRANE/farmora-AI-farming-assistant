@@ -5,6 +5,7 @@ from PIL import Image
 import numpy as np
 import io
 from fastapi.middleware.cors import CORSMiddleware 
+from scheduler import estimate_daily_water
 
 # --- 1. Load your CLEAN, FINAL Keras model ---
 # This path should be correct
@@ -86,3 +87,21 @@ async def predict(file: UploadFile = File(...)):
         "prediction": predicted_class_name,
         "confidence": confidence
     }
+@app.get("/api/scheduler")
+def get_schedule():
+    area_m2=5000
+    rain_mm=2
+    eto=5
+    kc=0.9
+    efficiency=0.75
+    flow_rate_lpm=20
+
+    volume, duration = estimate_daily_water(area_m2, rain_mm, eto, kc, efficiency, flow_rate_lpm)
+    return {
+        "Field": "Wheat Plot 1",
+        "water_needed_liters": round(volume, 2),
+        "duration_minutes": round(duration, 2),
+        "message": "Irrigation schedule calculated successfully."
+
+    }
+

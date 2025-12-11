@@ -1,21 +1,30 @@
-import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Hero from "./components/Hero";
 import Simulator from "./components/Simulator";
+import IrrigationCard from "./components/IrrigationCard";
 import Navbar from "./components/Navbar";
+import InfoSection from "./components/InfoSection";
+import WeatherSearch from "./components/WeatherSearch";
 
 function App() {
-  const [page, setPage] = useState("home");
-
   return (
-    <>
-      <Navbar /> {/* ✅ Always visible */}
-      {page === "home" && (
-        <Hero onStartSimulation={() => setPage("simulator")} />
-      )}
-      {page === "simulator" && (
-        <Simulator onBackToHome={() => setPage("home")} />
-      )}
-    </>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <Hero />
+              <InfoSection />
+            </>
+          }
+        />
+        <Route path="/simulator" element={<Simulator />} />
+        <Route path="/irrigation" element={<IrrigationCard />} />
+        <Route path="/weather" element={<WeatherSearch />} />
+      </Routes>
+    </Router>
   );
 }
 
