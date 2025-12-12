@@ -1,30 +1,32 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Hero from "./components/Hero";
-import Simulator from "./components/Simulator";
-import IrrigationCard from "./components/IrrigationCard";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import InfoSection from "./components/InfoSection";
+import Hero from "./components/Hero";
+import DashboardLayout from "./components/DashboardLayout";
+
+// Pages
+import Dashboard from "./components/Dashboard";
+import WeatherPrediction from "./components/WeatherPrediction";
+import IrrigationCard from "./components/IrrigationCard";
+import Simulator from "./components/Simulator";
 import WeatherSearch from "./components/WeatherSearch";
+import CropHealthMonitor from "./components/Crop Health Monitor/CropHealthMonitor";
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <Navbar />
+
       <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <Hero />
-              <InfoSection />
-            </>
-          }
-        />
-        <Route path="/simulator" element={<Simulator />} />
-        <Route path="/irrigation" element={<IrrigationCard />} />
-        <Route path="/weather" element={<WeatherSearch />} />
+        <Route path="/" element={<Hero />} />
+        {/* Dashboard Routes with Sidebar */}
+        <Route element={<DashboardLayout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/weather" element={<WeatherSearch />} />
+          <Route path="/irrigation" element={<IrrigationCard />} />
+          <Route path="/crop-health" element={<CropHealthMonitor />} />
+        </Route>
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
 
