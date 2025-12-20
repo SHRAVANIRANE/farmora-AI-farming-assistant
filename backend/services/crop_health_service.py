@@ -1,30 +1,28 @@
+# This acts like a temporary database
+CROP_SCAN_RESULTS = []
+
+def save_crop_scan_result(prediction: str):
+    is_healthy = "healthy" in prediction.lower()
+
+    CROP_SCAN_RESULTS.append({
+        "prediction": prediction,
+        "is_healthy": is_healthy
+    })
+
 def get_crop_health_summary():
-    """
-    Simulated summary of ML crop health predictions.
-    Later this will come from DB.
-    """
+    total = len(CROP_SCAN_RESULTS)
+    if total == 0:
+        return {
+            "total_fields": 0,
+            "healthy_percentage": 0,
+            "diseased_fields": 0
+        }
 
-    # Example ML results
-    predictions = [
-        "Tomato___healthy",
-        "Tomato___healthy",
-        "Potato___Late_blight",
-        "Apple___healthy",
-        "Corn___Common_rust",
-        "Corn___healthy",
-        "Tomato___healthy",
-        "Potato___healthy",
-    ]
-
-    total_fields = len(predictions)
-    healthy_fields = sum(1 for p in predictions if "healthy" in p.lower())
-    diseased_fields = total_fields - healthy_fields
-
-    healthy_percentage = int((healthy_fields / total_fields) * 100)
+    healthy = sum(1 for r in CROP_SCAN_RESULTS if r["is_healthy"])
+    diseased = total - healthy
 
     return {
-        "total_fields": total_fields,
-        "healthy_fields": healthy_fields,
-        "diseased_fields": diseased_fields,
-        "healthy_percentage": healthy_percentage,
+        "total_fields": total,
+        "healthy_percentage": int((healthy / total) * 100),
+        "diseased_fields": diseased
     }
