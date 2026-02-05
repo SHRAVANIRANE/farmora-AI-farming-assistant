@@ -4,46 +4,61 @@ const WeatherSearch = () => {
   const [currentWeather, setCurrentWeather] = useState(null);
   const [forecast, setForecast] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [location, setLocation] = useState(null);
+  const [locationError, setLocationError] = useState(false);
 
   const API_KEY = "a3df9be41ca01921607888d9bd762063";
-  const CITY = "Mumbai"; // later: farmer location
 
   useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLocation({
+          lat: position.coords.latitude,
+          lon: position.coords.longitude,
+        });
+      },
+      (error) => {
+        console.error("Location error:", error);
+        setLocationError(true);
+      }
+    );
+  }, []);
+
+  useEffect(() => {
+    if (!location) return;
+
     const fetchWeather = async () => {
       try {
-        // 1️⃣ Get current weather
+        setLoading(true);
+
         const currentRes = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?q=${CITY}&appid=${API_KEY}&units=metric`
+          `https://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.lon}&appid=${API_KEY}&units=metric`
         );
         const currentData = await currentRes.json();
 
-        // 2️⃣ Get forecast (One Call API needs lat/lon)
-        const { lat, lon } = currentData.coord;
-
         const forecastRes = await fetch(
-          `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
+          `https://api.openweathermap.org/data/2.5/forecast?lat=${location.lat}&lon=${location.lon}&appid=${API_KEY}&units=metric`
         );
         const forecastData = await forecastRes.json();
 
-        // Pick 1 forecast per day
         const dailyForecast = forecastData.list.filter((_, i) => i % 8 === 0);
 
         setCurrentWeather(currentData);
         setForecast(dailyForecast);
-        setLoading(false);
       } catch (error) {
         console.error("Weather fetch error:", error);
+      } finally {
         setLoading(false);
       }
     };
 
     fetchWeather();
-  }, []);
+  }, [location]);
 
-  if (loading) {
+  if (loading || !currentWeather) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        🌦 Loading weather data...
+        🌦 Detecting location & loading weather...
       </div>
     );
   }
@@ -104,12 +119,24 @@ const WeatherSearch = () => {
   const farmingAdvice =
     currentWeather && forecast.length ? generateFarmingAdvice() : [];
 
+  if (locationError) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-red-600">
+        📍 Location access denied. Please enable GPS.
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-green-50 p-6">
       {/* Title */}
-      <h2 className="text-xl font-semibold text-green-800">
+      <h2 className="text-3xl font-semibold text-green-800 mb-4 text-center">
         🌦 Weather Prediction
       </h2>
+      <p className="text-lg opacity-80 mb-6 text-center">
+        📍 {currentWeather.name}
+      </p>
+
       <p className="text-gray-600 mb-6">Live weather & 7-day forecast</p>
 
       {/* ---------------- CURRENT WEATHER ---------------- */}
