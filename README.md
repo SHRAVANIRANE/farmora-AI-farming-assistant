@@ -1,6 +1,6 @@
-# 🌾 Krishi Mitra – Smart Farming Assistant
+# 🌾 Farmora – Smart Farming Assistant
 
-Krishi Mitra is a full-stack, ML-powered web application designed to assist farmers in crop health monitoring, irrigation planning, and farm management.
+Farmora is a full-stack, ML-powered web application designed to assist farmers in crop health monitoring, irrigation planning, and farm management.
 
 ---
 
