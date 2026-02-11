@@ -11,7 +11,7 @@ from PIL import Image
 import numpy as np
 #io helps us read image bytes from uploaded files
 import io
-# ✅ REGISTER THE CROP HEALTH ROUTER
+# REGISTER THE CROP HEALTH ROUTER
 from crop_health import router as crop_health_router
 #---------------------------------------------------------------------------------------------#
 
@@ -46,13 +46,13 @@ CLASS_NAMES = [
 #Create an instance of the FastAPI application
 app = FastAPI()
 
-# ✅ REGISTER THE CROP HEALTH ROUTER
+# REGISTER THE CROP HEALTH ROUTER
 #include_router is a method that allows you to modularize your API by separating different functionalities into different routers.
 # Here, we are including the crop_health_router which contains routes related to crop health functionalities.
 app.include_router(crop_health_router)
 
 
-# ✅ REGISTER THE DASHBOARD ROUTER
+# REGISTER THE DASHBOARD ROUTER
 #This line includes the dashboard_router into the main FastAPI application.
 app.include_router(dashboard_router)
 
@@ -117,7 +117,7 @@ async def predict(file: UploadFile = File(...)):
     #Eg: If the model predicts [0.1, 0.7, 0.2], np.max will return 0.7 and float converts it to a standard Python float type.
     confidence = float(np.max(prediction))
 
-    # ✅ SAVE RESULT in backend.
+    # SAVE RESULT in backend.
     #This is what updates the "Overall Crop Health Statistics" in the dashboard.
     #This single line connects:
     #ML → Dashboard → Farm Summary

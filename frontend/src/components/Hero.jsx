@@ -19,7 +19,7 @@ const Hero = ({}) => {
           transition={{ duration: 0.8 }}
         >
           <h1 className="text-4xl md:text-7xl font-extrabold text-green-50 mb-4">
-            🌿Krishi Mitra🌿
+            🌿Farmora🌿
           </h1>
 
           <p className="text-lg md:text-xl text-green-50 font-medium max-w-2xl mx-auto leading-relaxed mt-4">
