@@ -13,6 +13,8 @@ import numpy as np
 import io
 # REGISTER THE CROP HEALTH ROUTER
 from crop_health import router as crop_health_router
+
+
 #---------------------------------------------------------------------------------------------#
 
 
@@ -62,7 +64,7 @@ app.include_router(dashboard_router)
 # CORS (Cross-Origin Resource Sharing) is a security feature implemented by web browsers to restrict web pages from making requests to a different domain than the one that served the web page.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=["*"], # Allow all origins
     allow_credentials=True,
     allow_methods=["*"], # Allow all HTTP methods (GET, POST, etc.)
     allow_headers=["*"], # Allow all headers
